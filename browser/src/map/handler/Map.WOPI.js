@@ -462,6 +462,11 @@ L.Map.WOPI = L.Handler.extend({
 		if (!!this.PostMessageOrigin && window.parent !== window.self) {
 			// Filter out unwanted save request response
 			if (msgId === 'Action_Save_Resp') {
+				// uploaded to wopi host successfully  or uploaded to wopi host failed
+				if ((values.success && values.result && values.result === 'Save completed')
+						|| !values.success) {
+					this._notifySave = true;
+				}
 				if (!this._notifySave)
 					return;
 
@@ -473,6 +478,7 @@ L.Map.WOPI = L.Handler.extend({
 				'SendTime': Date.now(),
 				'Values': values
 			};
+			
 			window.parent.postMessage(JSON.stringify(msg), this.PostMessageOrigin);
 		}
 	},
