@@ -21,7 +21,7 @@ echo "yourusername ALL=(ALL) NOPASSWD: /sbin/setcap"
 echo
 sudo echo "works"
 
-# Check env variables
+# Check env variables, and ...
 if [ -z "$DOCKER_HUB_REPO" ]; then
   DOCKER_HUB_REPO="wserp/code"
 fi;
