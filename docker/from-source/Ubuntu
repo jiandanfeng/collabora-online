@@ -18,6 +18,10 @@ RUN apt-get update && \
                fonts-wqy-zenhei fonts-wqy-microhei fonts-droid-fallback \
                fonts-noto-cjk
 
+ADD /install-collabora-online-ubuntu.sh /
+RUN bash install-collabora-online-ubuntu.sh
+RUN rm -rf /install-collabora-online-ubuntu.sh
+
 # copy freshly built LOKit and Collabora Online
 COPY /instdir /
 
