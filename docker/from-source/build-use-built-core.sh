@@ -26,14 +26,9 @@ if [ -z "$DOCKER_HUB_REPO" ]; then
   DOCKER_HUB_REPO="wserp/code"
 fi;
 if [ -z "$DOCKER_HUB_TAG" ]; then
-  DOCKER_HUB_TAG="latest"
+  DOCKER_HUB_TAG="22.05"
 fi;
 echo "Using Docker Hub Repository: '$DOCKER_HUB_REPO' with tag '$DOCKER_HUB_TAG'."
-
-if [ -z "$CORE_BRANCH" ]; then
-  CORE_BRANCH="distro/collabora/co-22.05"
-fi;
-echo "Building core branch '$CORE_BRANCH'"
 
 if [ -z "$COLLABORA_ONLINE_REPO" ]; then
   COLLABORA_ONLINE_REPO="https://github.com/jiandanfeng/collabora-online.git"
@@ -42,11 +37,6 @@ if [ -z "$COLLABORA_ONLINE_BRANCH" ]; then
   COLLABORA_ONLINE_BRANCH="master"
 fi;
 echo "Building online branch '$COLLABORA_ONLINE_BRANCH' from '$COLLABORA_ONLINE_REPO'"
-
-if [ -z "$CORE_BUILD_TARGET" ]; then
-  CORE_BUILD_TARGET=""
-fi;
-echo "LOKit (core) build target: '$CORE_BUILD_TARGET'"
 
 
 SRCDIR=$(realpath `dirname $0`)
@@ -90,15 +80,13 @@ fi
 
 # core repo
 if test ! -d core ; then
-  #git clone https://git.libreoffice.org/core || exit 1
   mkdir -p core/
-  cp ../../core-co-22.05-assets.tar.gz code/core-co-22.05-assets.tar.gz
-  tar -zxvf core/core-co-22.05-assets.tar.gz core/
-  rm -rf core/core-co-22.05-assets.tar.gz
+  cp ../../core-co-22.05-assets.tar.gz core/core-co-22.05-assets.tar.gz
+  cd core/
+  tar -zxf core-co-22.05-assets.tar.gz
+  rm -rf core-co-22.05-assets.tar.gz
+  cd ..
 fi
-
-#( cd core && git fetch --all && git checkout $CORE_BRANCH && ./g pull -r ) || exit 1
-
 
 # online repo
 if test ! -d online ; then
@@ -108,28 +96,7 @@ fi
 ( cd online && git fetch --all && git checkout -f $COLLABORA_ONLINE_BRANCH && git clean -f -d && git pull -r ) || exit 1
 
 
-# brand repo
-#if test ! -d online-branding ; then
-#  git clone https://gitlab.collabora.com/productivity/online-branding.git online-branding || echo "Could not clone this proprietary repo"
-  #git clone git@gitlab.collabora.com:productivity/online-branding.git online-branding || echo "Could not clone this proprietary repo"
-#fi
-
-#if test -d online-branding ; then
-#  ( cd online-branding && git pull -r ) || exit 1
-#fi
-
-##### LOKit (core) #####
-
-# build
-#if [ "$CORE_BRANCH" == "distro/collabora/co-22.05" ]; then
-#  ( cd core && ./autogen.sh --with-distro=CPLinux-LOKit --disable-epm --without-package-format --disable-symbols ) || exit 1
-#else
-#  ( cd core && ./autogen.sh --with-distro=LibreOfficeOnline ) || exit 1
-#fi
-#( cd core && make $CORE_BUILD_TARGET ) || exit 1
-
 # copy stuff
-cd "$BUILDDIR"
 
 mkdir -p "$INSTDIR"/opt/
 cp -a core/instdir "$INSTDIR"/opt/lokit
@@ -143,14 +110,6 @@ cp -a core/instdir "$INSTDIR"/opt/lokit
 
 # copy stuff
 ( cd online && DESTDIR="$INSTDIR" make install ) || exit 1
-
-##### online branding #####
-#if test -d online-branding ; then
-#  cd online-branding
-#  ./brand.sh $INSTDIR/opt/lokit $INSTDIR/usr/share/coolwsd/browser/dist 6 # CODE
-#  ./brand.sh $INSTDIR/opt/lokit $INSTDIR/usr/share/coolwsd/browser/dist 7 # Nextcloud Office
-#  cd ..
-#fi
 
 # Create new docker image
 if [ -z "$NO_DOCKER_IMAGE" ]; then

@@ -112,7 +112,6 @@ test/TAGS
 
 docker/from-source/instdir
 docker/from-source/builddir
-docker/core-co*.tar.gz
 
 ios/Mobile/Info.plist
 ios/Mobile/Fonts
