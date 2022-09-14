@@ -26,7 +26,7 @@ if [ -z "$DOCKER_HUB_REPO" ]; then
   DOCKER_HUB_REPO="wserp/code"
 fi;
 if [ -z "$DOCKER_HUB_TAG" ]; then
-  DOCKER_HUB_TAG="22.05"
+  DOCKER_HUB_TAG="22.05-source"
 fi;
 echo "Using Docker Hub Repository: '$DOCKER_HUB_REPO' with tag '$DOCKER_HUB_TAG'."
 
