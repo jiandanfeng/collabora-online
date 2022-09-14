@@ -1678,8 +1678,6 @@ void DocumentBroker::handleUploadToStorageResponse(const StorageBase::UploadResu
         }
 
         broadcastLastModificationTime();
-        // uploaded to wopi host successfully
-        _uploadRequest->session()->sendTextFrame("commandresult: { \"command\": \"save\", \"success\": true, \"result\":\"Save completed\"}");
 
         if (_docState.isUnloadRequested())
         {
