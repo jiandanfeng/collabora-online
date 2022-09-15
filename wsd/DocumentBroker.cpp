@@ -1678,7 +1678,12 @@ void DocumentBroker::handleUploadToStorageResponse(const StorageBase::UploadResu
         }
 
         broadcastLastModificationTime();
-
+        const auto savedSession = _uploadRequest->session();
+        if(savedSession)
+        {
+            // uploaded to wopi host successfully
+            savedSession->sendTextFrame("commandresult: { \"command\": \"save\", \"success\": true, \"result\":\"Save completed\"}");
+        }
         if (_docState.isUnloadRequested())
         {
             // We just uploaded, flag to destroy if unload is requested.
