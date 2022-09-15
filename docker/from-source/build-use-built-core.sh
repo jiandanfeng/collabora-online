@@ -26,7 +26,7 @@ if [ -z "$DOCKER_HUB_REPO" ]; then
   DOCKER_HUB_REPO="wserp/code"
 fi;
 if [ -z "$DOCKER_HUB_TAG" ]; then
-  DOCKER_HUB_TAG="22.05-source"
+  DOCKER_HUB_TAG="22.05"
 fi;
 echo "Using Docker Hub Repository: '$DOCKER_HUB_REPO' with tag '$DOCKER_HUB_TAG'."
 
@@ -35,7 +35,7 @@ if [ -z "$COLLABORA_ONLINE_REPO" ]; then
   # COLLABORA_ONLINE_REPO="https://github.com/CollaboraOnline/online.git"
 fi;
 if [ -z "$COLLABORA_ONLINE_BRANCH" ]; then
-  COLLABORA_ONLINE_BRANCH="source"
+  COLLABORA_ONLINE_BRANCH="master"
 fi;
 echo "Building online branch '$COLLABORA_ONLINE_BRANCH' from '$COLLABORA_ONLINE_REPO'"
 
